@@ -1,5 +1,67 @@
 # Mailspring Changelog
 
+## 1.13.3
+
+Happy new year! This is a small update to Mailspring with a few important changes:
+
+- On macOS, long-pressing a key to show it's available subtitutions (eg: `e` to see `é, ê, etc.`) now works properly in the email composer. Sorry for the delay fixing this issue, for many non-english speakers on macOS we know it's a core part of your email workflow.
+
+- We now escape subject and participant names in the print modal, ensuring that they render properly for printing. Thanks to Andrialdy R for identifying and documenting a related vulnerability.
+
+- We now use DOMPurify to sanitize the content of HTML emails for display. DOMPurify is maintained by a team of security-oriented web engineers and will ensure Mailspring protects you from the widest possible range of XSS attacks and exploits. Thanks to Yaniv Nizry of [Sonar](https://sonarsource.com) for identifying and reporting weaknesses in our old sanitizer.
+
+- As part of the DOMPurify change, Mailspring now supports a smaller range of links in emails (https://, tel://, mailto:// etc). Thanks to Vaibhav Rajput and Prajyot Chemburkar of [Payatu](https://payatu.com/) for reporting that smb:// links were previously allowed and useful in triggering exploits.
+
+## 1.13.2
+
+This is a patch release that fixes several issues:
+
+- Composition events in Mailspring's composer should work as expected. (Typing modifier keys, such as Option-E followed by E to create É)
+
+- The composer warn about several more invalid recipient errors correctly (thanks @Phylu!)
+
+- Dark-mode tray support on Windows has been improved with new icons (thanks @Phylu!)
+
+- The Linux Snap build no longer requests extraneous permissions (thanks @3v1n0!)
+
+## 1.13.1
+
+Mailspring 1.13 now runs on Electron 22, completing a migration process we started in 1.12.0!
+
+If you are upgrading from an old version of Mailspring, download and run 1.12.0 first before installing this version. We've moved from keytar to Electron's safeStorage API for securely storing your email passwords, and version 1.12.0 will perform a migration ensuring your passwords are transitioned.
+
+If you're using the snap version of Mailspring, you may find that Mailspring forgets your passwords when you upgrade. I'm very sorry for the hassle this causes - issues with snap containment in version 1.12.0 caused Mailspring to lose many user's passwords during the upgrade process. If this applies to you, you may see password errors and need to:
+
+    Visit Preferences > Subscription and click Setup Mailspring ID and sign back in to your Mailspring account. (You should see an alert at launch that will remind you which email address you'd used for your Mailspring ID)
+
+    Visit Preferences > Accounts and re-authenticate any accounts shown in red that are having connection difficulty.
+
+## 1.12.0 (10/09/2023)
+
+Features:
+
+- The Windows tray icon styles have been improved, and a new option allows you to opt-out of the red icon style. (Thanks @Phylu)
+
+- Mail rules now support filtering based on the "Reply-to" header. (Thanks @Phylu)
+
+- The "Snooze" UI now allows you to type "600" as a shortcut for for "6:00". (Thanks @ChocoTonic)
+
+Bug Fixes:
+
+- The snooze label is less ambiguous and includes the month and year. (Thanks @Phylu)
+
+Localization:
+
+- British english localizations have been added. (Thanks @danbishop)
+
+- Traditional chinese localizations have been greatly improved. (Thanks @PeterDaveHello)
+
+Developer:
+
+- Mailspring now stores your mail secrets using Electron SafeStorage instead of the deprecated Keytar library thanks to updates by @Phylu. This will allow us to move to a newer version of Electron soon!
+
+- The Snap package now uses core22 and the `gnome` extension. (Thanks @soumyaDghosh)
+
 ## 1.11.0 (07/28/2023)
 
 Features:
@@ -26,7 +88,7 @@ Bug Fixes:
 
 Developer:
 
-- Mailspring now uses a more restrictive Content-Security-Policy that includes `object-src none; media-src mailspring:; manifest-src none;`. If your plugin packaged media such as sounds, you may need to reference them via the mailspring:// URL syntax (ala 2b75347c)
+- Mailspring now uses a more restrictive Content-Security-Policy that includes `object-src none; media-src mailspring:; manifest-src none;`. If your plugin packaged media such as sounds, you may need to reference them via the mailspring:// URL syntax (ala 2b75347c) (Thanks to Igor Sak-Sakovskiy of [Positive Technologies](https://www.ptsecurity.com/ww-en/) for a related vulnerability report.)
 
 ## 1.10.8 (12/29/2022)
 
@@ -64,7 +126,7 @@ Changes:
 
 - Mailsync now requests fewer emails at a time, fixing compatibility issues with large Office365 accounts. (Thanks @BrandonGillis for extensive testing of this change!)
 
-- Inline image "cid:" references may appear only in `<img src=“”>`, and may not appear elsewhere in message bodies.
+- Inline image "cid:" references may appear only in `<img src=“”>`, and may not appear elsewhere in message bodies. (Thanks to Igor Sak-Sakovskiy of [Positive Technologies](https://www.ptsecurity.com/ww-en/) for this vulnerability report.)
 
 - Mailspring uses iframe sandboxing to disallow interactivity in message bodies, in addition to santizing loaded HTML down to a strict list of tags and attributes.
 
