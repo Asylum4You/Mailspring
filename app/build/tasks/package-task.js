@@ -133,6 +133,7 @@ module.exports = grunt => {
       tmpdir: tmpdir,
       arch: {
         win32: 'x64',
+        darwin: process.env.OVERRIDE_TO_INTEL ? 'x64' : process.arch,
       }[platform],
       icon: {
         darwin: path.resolve(
@@ -167,6 +168,7 @@ module.exports = grunt => {
             '**/vendor/**',
             'examples/**',
             '**/src/tasks/**',
+            '**/src/quickpreview/**',
             '**/static/all_licenses.html',
             '**/static/extensions/**',
             '**/node_modules/spellchecker/**',
